@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Shakti Processor</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        color: #f2f5f7;
+        font-family: sans-serif;
+        letter-spacing: 1px;
+        font-weight: 300;
+      }
+      body {
+        overflow-x: hidden;
+      }
+      nav {
+        height: 6rem;
+        width: 100vw;
+        background-color: #131418;
+        box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        position: fixed;
+        z-index: 10;
+      }
+
+      /*Styling logo*/
+      .logo {
+        padding: 1vh 1vw;
+        text-align: center;
+      }
+      .logo img {
+        height: 5rem;
+        width: 5rem;
+      }
+
+      /*Styling Links*/
+      .nav-links {
+        display: flex;
+        list-style: none;
+        width: 88vw;
+        padding: 0 0.7vw;
+        justify-content: space-evenly;
+        align-items: center;
+        text-transform: uppercase;
+      }
+      .nav-links li a {
+        text-decoration: none;
+        margin: 0 0.7vw;
+      }
+      .nav-links li a:hover {
+        color: #61dafb;
+      }
+      .vav-links li {
+        position: relative;
+        letter-spacing: 1px;
+      }
+      .nav-links li a::after {
+        content: "";
+        position: absolute;
+        background-color: #61dafb;
+        height: 3px;
+        width: 0%;
+        left: 0%;
+        bottom: 0px;
+        transition: 0.5s;
+      }
+      .nav-links li a:hover::before {
+        width: 100%;
+      }
+
+      /*Styling Hamburger Icon*/
+      .hamburger div {
+        width: 30px;
+        height: 3px;
+        background: #f2f5f7;
+        margin: 5px;
+        transition: all 0.3s ease;
+      }
+      .hamburger {
+        display: none;
+      }
+
+      /*Stying for small screens*/
+      @media screen and (max-width: 800px) {
+        nav {
+          position: fixed;
+          z-index: 3;
+        }
+        .hamburger {
+          display: block;
+          position: absolute;
+          cursor: pointer;
+          right: 5%;
+          top: 50%;
+          transform: translate(-5%, -50%);
+          z-index: 2;
+          transition: all 0.7s ease;
+        }
+        .nav-links {
+          position: fixed;
+          background: #131418;
+          height: 100vh;
+          width: 100%;
+          flex-direction: column;
+          clip-path: circle(50px at 90% -20%);
+          -webkit-clip-path: circle(50px at 90% -10%);
+          transition: all 1s ease-out;
+          pointer-events: none;
+        }
+        .nav-links.open {
+          clip-path: circle(1000px at 90% -10%);
+          -webkit-clip-path: circle(1000px at 90% -10%);
+          pointer-events: all;
+        }
+        .nav-links li {
+          opacity: 0;
+        }
+        .nav-links li:nth-child(1) {
+          transition: all 0.5s ease 0.2s;
+        }
+        .nav-links li:nth-child(2) {
+          transition: all 0.5s ease 0.4s;
+        }
+        .nav-links li:nth-child(3) {
+          transition: all 0.5s ease 0.6s;
+        }
+        .nav-links li:nth-child(4) {
+          transition: all 0.5s ease 0.7s;
+        }
+        .nav-links li:nth-child(5) {
+          transition: all 0.5s ease 0.8s;
+        }
+        .nav-links li:nth-child(6) {
+          transition: all 0.5s ease 0.9s;
+          margin: 0;
+        }
+        .nav-links li:nth-child(7) {
+          transition: all 0.5s ease 1s;
+          margin: 0;
+        }
+        li.fade {
+          opacity: 1;
+        }
+      }
+      .active {
+        color: #61dafb;
+      }
+      /*Animating Hamburger Icon on Click*/
+      .toggle .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      .toggle .line2 {
+        transition: all 0.7s ease;
+        width: 0;
+      }
+      .toggle .line3 {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+      .dropdown {
+        float: left;
+        overflow: hidden;
+      }
+
+      .dropdown .dropbtn {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        /* padding:10px 26px; */
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+        transition: 0.3s;
+      }
+
+      .navbar a:hover,
+      .dropdown:hover .dropbtn {
+        color: #61dafb;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #61dafb;
+        min-width: 60px;
+        z-index: 1;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        /* margin-left: 20px; */
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 10px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        transition: 0.3s;
+      }
+      .a-off:hover {
+        color: #61dafb;
+        background-color: white;
+      }
+      /* .button-alter{
+        animation: ani2 2s infinite;
+        color: black;
+        padding: 10px;
+        margin-left: 370px;
+      }
+      @keyframes ani2 {
+        0%{background-color: green;}
+        25%{background-color: red;}
+        50%{background-color: blue;}
+        75%{background-color: orange;}
+        100%{background-color: Yellow;}
+      } */
+      .button-alter {
+        background-color: black;
+        padding: 10px 15px;
+        border-radius: 24px;
+        border: 1px solid red;
+        margin-left: 350px;
+        font-size: larger;
+        animation: ani 5s infinite;
+      }
+      @keyframes ani {
+        0% {
+          background-color: green;
+        }
+        25% {
+          background-color: red;
+        }
+        50% {
+          background-color: blue;
+        }
+        75% {
+          background-color: orange;
+        }
+        100% {
+          background-color: gold;
+        }
+      }
+      .div-img {
+        overflow: hidden;
+        /* border-radius: 10px 120px; */
+        /* margin-right: 50px; */
+        width: 300px;
+        /* height: 400px; */
+        /* float: right; */
+      }
+      .img-1 {
+        filter: grayscale(100%);
+        transition: 0.5s ease;
+        cursor: pointer;
+        width: 300px;
+        /* height: 400px; */
+        /* float: right; */
+      }
+      .img-1:hover {
+        transform: scale(1.1);
+        filter: grayscale(0%);
+      }
+      .coral {
+        height: 2.8em;
+        width: 9em;
+        background: transparent;
+        -webkit-animation: jello-horizontal 0.9s both;
+        animation: jello-horizontal 0.9s both;
+        border: 2px solid #016dd9;
+        outline: none;
+        color: #016dd9;
+        font-size: 17px;
+      }
+
+      .coral:hover {
+        background: #016dd9;
+        color: #ffffff;
+        animation: squeeze3124 0.9s both;
+      }
+      #chart line {
+        stroke: white;
+        stroke-width: 5;
+      }
+      #chart1 {
+        stroke: red;
+        stroke-width: 8;
+        margin-top: -30px;
+      }
+      @keyframes squeeze3124 {
+        0% {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+
+        30% {
+          -webkit-transform: scale3d(1.25, 0.75, 1);
+          transform: scale3d(1.25, 0.75, 1);
+        }
+
+        40% {
+          -webkit-transform: scale3d(0.75, 1.25, 1);
+          transform: scale3d(0.75, 1.25, 1);
+        }
+
+        50% {
+          -webkit-transform: scale3d(1.15, 0.85, 1);
+          transform: scale3d(1.15, 0.85, 1);
+        }
+
+        65% {
+          -webkit-transform: scale3d(0.95, 1.05, 1);
+          transform: scale3d(0.95, 1.05, 1);
+        }
+
+        75% {
+          -webkit-transform: scale3d(1.05, 0.95, 1);
+          transform: scale3d(1.05, 0.95, 1);
+        }
+
+        100% {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+      }
+      #backToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #backToTopBtn:hover {
+        background-color: #0056b3;
+      }
+      .wave {
+        animation: wave 3s linear;
+        animation-iteration-count: infinite;
+        fill: #2c2d31;
+      }
+      #wave2 {
+        animation-duration: 5s;
+        animation-direction: reverse;
+        opacity: 0.6;
+      }
+      #wave3 {
+        animation-duration: 7s;
+        opacity: 0.3;
+      }
+      @keyframes wave {
+        to {
+          transform: translateX(-100%);
+        }
+      }
+      @keyframes ball {
+        to {
+          transform: translateY(20%);
+        }
+      }
+      .li-fa:hover {
+        transition: 0.5s ease;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="backToTopBtn" onclick="scrollToTop()">
+      <span class="material-symbols-outlined"> expand_less </span>
+    </button>
+
+    <script>
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function () {
+        var mybutton = document.getElementById("backToTopBtn");
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          mybutton.style.display = "block";
+        } else {
+          mybutton.style.display = "none";
+        }
+      };
+
+      // When the user clicks on the button, scroll to the top of the document with a smooth animation
+      function scrollToTop() {
+        var scrollStep = -window.scrollY / (500 / 15);
+        var scrollInterval = setInterval(function () {
+          if (window.scrollY !== 0) {
+            window.scrollBy(0, scrollStep);
+          } else {
+            clearInterval(scrollInterval);
+          }
+        }, 15);
+      }
+    </script>
+    <nav>
+      <div class="logo">
+        <img src="https://shakti.org.in/img/logo.png" alt="Logo Image" />
+      </div>
+      <div class="hamburger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <div class="dropdown">
+          <li><a href="#" class="dropbtn">Proccesor</a></li>
+          <div class="dropdown-content">
+            <a href="#" class="a-off">E-class</a>
+            <a href="#" class="a-off">C-class</a>
+            <a href="#" class="a-off">Shakti SoC</a>
+            <a href="#" class="a-off">Tape Out</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <li><a href="#" class="dropbtn">Softwear</a></li>
+          <div class="dropdown-content">
+            <a href="#" class="a-off">SHAKTI-sdk</a>
+            <a href="#" class="a-off">Documents</a>
+            <a href="#" class="a-off">Learn with Shakti</a>
+          </div>
+        </div>
+        <li><a href="#">Ideate and Build</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Jobs</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Forum</a></li>
+      </ul>
+    </nav>
+    <script>
+      const hamburger = document.querySelector(".hamburger");
+      const navLinks = document.querySelector(".nav-links");
+      const links = document.querySelectorAll(".nav-links li");
+
+      hamburger.addEventListener("click", () => {
+        //Animate Links
+        navLinks.classList.toggle("open");
+        links.forEach((link) => {
+          link.classList.toggle("fade");
+        });
+
+        //Hamburger Animation
+        hamburger.classList.toggle("toggle");
+      });
+    </script>
+    <br /><br /><br /><br /><br />
+    <main>
+      <div
+        style="
+          background: url(https://i.ytimg.com/vi/zUFyq49XGHg/maxresdefault.jpg);
+          background-repeat: no-repeat;
+          max-width: 100%;
+          max-height: 110%;
+          background-size: cover;
+          height: 600px;
+          width: 100%;
+        "
+      >
+        <!-- images with css -->
+
+        <img
+          src="Image/shaktilogo.png"
+          style="width: 500px; margin-left: 350px"
+          alt=""
+        /><br /><br />
+        <button class="button-alter">
+          MOUSHIK - Letest Indigenous RISC-V Microprocessor
+        </button>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+      </div>
+      <div
+        style="
+          background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+          background-blend-mode: soft-light, screen;
+        "
+      >
+        <br /><br />
+        <!-- <img
+          src="https://shakti.org.in/img/img3.jpg"
+          alt=""
+          width="350px"
+          style="margin-left: 50px; float: left"
+        />
+        <div style="margin-top: 100px;">
+          <h3 style="color: black; text-align: center;">Shakti Processors</h3>
+          <br>
+          <p style="color: black; text-align: center; word-break: break-all; width: 500px; margin-left:600px;line-height: 20px;">
+            Open-source processor development initiative by the RISE group at
+            IIT-Madras. The aim is to build an ecosystem of production grade
+            processors, SoC's and peripheral IP's.
+          </p>
+        </div> -->
+        <div>
+          <table>
+            <tr>
+              <td>
+                <fieldset
+                  style="
+                    width: 300px;
+                    margin-left: 80px;
+                    background-color: white;
+                  "
+                >
+                  <div class="div-img">
+                    <img
+                      src="https://shakti.org.in/img/img3.jpg"
+                      width="300px"
+                      alt=""
+                      class="img-1"
+                    />
+                  </div>
+                  <br /><br />
+                  <h3 style="color: black; text-align: center">
+                    Shakti Processors
+                  </h3>
+                  <p
+                    style="
+                      color: black;
+                      text-align: center;
+                      word-break: break-all;
+                      line-height: 20px;
+                      margin-top: 30px;
+                    "
+                  >
+                    Open-source processor development initiative by the RISE
+                    group at IIT-Madras. The aim is to build an ecosystem of
+                    production grade processors, SoC's and peripheral IP's.
+                  </p>
+                  <br />
+                  <hr style="height: 1px; background-color: black" />
+                  <br />
+                  <button
+                    class="coral"
+                    style="margin-left: 73px; cursor: pointer"
+                  >
+                    Learn More
+                  </button>
+                  <br /><br />
+                </fieldset>
+              </td>
+
+              <td>
+                <fieldset
+                  style="
+                    width: 300px;
+                    margin-left: 80px;
+                    background-color: white;
+                  "
+                >
+                  <div class="div-img">
+                    <img
+                      src="https://shakti.org.in/img/img1-1.jpg"
+                      width="300px"
+                      alt=""
+                      class="img-1"
+                    />
+                  </div>
+                  <br /><br />
+                  <h3 style="color: black; text-align: center">
+                    Shakti Software
+                  </h3>
+                  <p
+                    style="
+                      color: black;
+                      text-align: center;
+                      word-break: break-all;
+                      line-height: 20px;
+                      margin-top: 30px;
+                    "
+                  >
+                    Software Development Kits and IDE's readily available to
+                    build applications on SHAKTI. Various drivers and sensor
+                    applications proven on SHAKTI based development boards.
+                  </p>
+                  <br />
+                  <hr style="height: 1px; background-color: black" />
+                  <br />
+                  <button
+                    class="coral"
+                    style="margin-left: 73px; cursor: pointer"
+                  >
+                    Learn More
+                  </button>
+                  <br /><br />
+                </fieldset>
+              </td>
+
+              <td>
+                <fieldset
+                  style="
+                    width: 300px;
+                    margin-left: 80px;
+                    background-color: white;
+                  "
+                >
+                  <div class="div-img">
+                    <img
+                      src="https://shakti.org.in/img/img2.jpg"
+                      width="300px"
+                      alt=""
+                      class="img-1"
+                    />
+                  </div>
+                  <br /><br />
+                  <h3 style="color: black; text-align: center">
+                    Collaborate with Shakti
+                  </h3>
+                  <p
+                    style="
+                      color: black;
+                      text-align: center;
+                      word-break: break-all;
+                      line-height: 20px;
+                      margin-top: 30px;
+                    "
+                  >
+                    We welcome collaborations from industry, academic
+                    institutions and individuals. Please browse through the
+                    open-issues that we are currently working. If interested,
+                    let us know.
+                  </p>
+                  <br />
+                  <hr style="height: 1px; background-color: black" />
+                  <br />
+                  <button
+                    class="coral"
+                    style="margin-left: 73px; cursor: pointer"
+                  >
+                    Learn More
+                  </button>
+                  <br /><br />
+                </fieldset>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <br /><br />
+      </div>
+      <div
+        style="
+          background-image: linear-gradient(to right, #434343 0%, black 100%);
+        "
+      >
+        <br /><br />
+        <table>
+          <tr>
+            <td>
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 300px; margin-left: 30px"
+              >
+                bolt
+              </span>
+              <p
+                style="
+                  font-size: 40px;
+                  font-family: 'Trebuchet MS', 'Lucida Sans Unicode',
+                    'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                  margin-left: 65px;
+                "
+              >
+                Motivation
+              </p>
+            </td>
+            <td>
+              <div
+                style="
+                  font-size: xx-large;
+                  word-wrap: break-word;
+                  width: 800px;
+                  margin-bottom: 60px;
+                "
+              >
+                An open source processor ecosystem to boost customization,
+                collaboration between academia and industry to provide
+                innovative, customized solutions without the hassles of
+                royalties and NDA.
+              </div>
+              <button class="coral" style="cursor: pointer; margin-left: 250px">
+                Learn More
+              </button>
+            </td>
+          </tr>
+        </table>
+        <br /><br />
+        <table>
+          <tr>
+            <td>
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 300px; margin-left: 30px"
+              >
+                terminal
+              </span>
+              <p
+                style="
+                  font-size: 40px;
+                  font-family: 'Trebuchet MS', 'Lucida Sans Unicode',
+                    'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                  margin-left: 65px;
+                "
+              >
+                Shakti program
+              </p>
+            </td>
+            <td>
+              <div
+                style="
+                  font-size: xx-large;
+                  word-wrap: break-word;
+                  width: 800px;
+                  margin-bottom: 60px;
+                "
+              >
+                The SHAKTI Processor Program, was started as an academic
+                initiative back in 2014 by the RISE group at IIT-Madras. Source
+                code of all the components of the SHAKTI ecosystem are open
+                under the 3 part BSD license.
+              </div>
+              <button class="coral" style="cursor: pointer; margin-left: 250px">
+                Learn More
+              </button>
+            </td>
+          </tr>
+        </table>
+        <br /><br />
+      </div>
+      <div
+        style="
+          margin-left: -7px;
+          margin-right: -7px;
+          background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5a8 100%);
+        "
+      >
+        <br /><br />
+        <br />
+        <h1
+          style="
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            color: black;
+            font-size: 70px;
+          "
+        >
+          Sponsor
+        </h1>
+        <br />
+        <img
+          src="https://shakti.org.in/img/supporters/1.png"
+          width="50%"
+          style="margin-left: 300px"
+          alt=""
+        />
+        <br /><br /><br /><br />
+      </div>
+      <div style="background-color: whitesmoke">
+        <br /><br />
+        <h1
+          style="
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            color: black;
+            font-size: 70px;
+          "
+        >
+          Tool Sponsors
+        </h1>
+        <br /><br /><br />
+        <img
+          src="https://shakti.org.in/img/supporters/bluespec.png"
+          width="27%"
+          alt=""
+          style="margin-left: 60px; cursor: pointer"
+        />
+        <img
+          src="https://shakti.org.in/img/supporters/Mentor-Graphics-ASB-Logo-Color-Hires.png"
+          width="27%"
+          alt=""
+          style="margin-left: 40px; cursor: pointer"
+        />
+        <img
+          src="https://shakti.org.in/img/supporters/synopsys_color.png"
+          width="27%"
+          alt=""
+          style="margin-left: 40px; cursor: pointer"
+        /><br /><br /><br /><br />
+        <img
+          src="https://shakti.org.in/img/supporters/cadence.png"
+          width="27%"
+          alt=""
+          style="margin-left: 60px; cursor: pointer"
+        />
+        <img
+          src="https://shakti.org.in/img/supporters/web-xilinx.png"
+          width="27%"
+          alt=""
+          style="margin-left: 40px; cursor: pointer"
+        />
+        <br /><br /><br /><br />
+      </div>
+      <div style="background-color: rgb(220, 220, 220); text-align: center">
+        <br /><br />
+        <h1 style="color: black">Industry Collaborators</h1>
+        <br /><br />
+        <div
+          style="
+            width: 80%;
+            background-color: rgba(229, 229, 229, 0.758);
+            margin-left: 110px;
+          "
+        >
+          <img
+            src="https://shakti.org.in/img/supporters/Indira_Gandhi_Centre_for_Atomic_Research_Logo.png"
+            alt=""
+            width="20%"
+            style="margin-left: -30px"
+          />
+          <img
+            src="https://shakti.org.in/img/supporters/isro.png"
+            alt=""
+            width="20%"
+            style="margin-left: 25px"
+          />
+          <img
+            src="https://shakti.org.in/img/supporters/barc.png"
+            alt=""
+            width="20%"
+            style="margin-left: 25px"
+          />
+          <img
+            src="https://shakti.org.in/img/supporters/pio-logo.png"
+            alt=""
+            width="13%"
+            style="vertical-align: 10px; margin-left: 25px"
+          />
+        </div>
+        <br /><br />
+        <div
+          style="
+            width: 80%;
+            background-color: rgba(229, 229, 229, 0.758);
+            margin-left: 110px;
+            padding-top: 40px;
+            padding-bottom: 40px;
+          "
+        >
+          <img
+            src="https://shakti.org.in/img/supporters/thales.png"
+            alt=""
+            width="19%"
+            style="vertical-align: 10px"
+          />
+          <img
+            src="https://shakti.org.in/img/supporters/wd.png"
+            alt=""
+            width="19%"
+            style="margin-left: 35px"
+          />
+          <img
+            src="https://www.intel.in/content/dam/logos/intel-footer-logo.svg"
+            alt=""
+            width="15%"
+            style="
+              margin-left: 30px;
+              background-color: rgba(229, 229, 229, 0.758);
+            "
+          />
+          <img
+            src="https://hcl.com/wp-content/themes/Hcl/img/logo.png"
+            alt=""
+            width="19%"
+            style="margin-left: 25px; vertical-align: 10px"
+          />
+        </div>
+        <br /><br />
+        <div
+          style="
+            width: 43%;
+            background-color: rgba(229, 229, 229, 0.758);
+            margin-left: 110px;
+            padding-top: 40px;
+            padding-bottom: 40px;
+          "
+        >
+          <img
+            src="https://shakti.org.in/img/supporters/aldec.png"
+            alt=""
+            width="30%"
+          />
+          <img
+            src="https://shakti.org.in/img/supporters/prodigy.jpg"
+            alt=""
+            width="30%"
+            style="margin-left: 60px"
+          />
+        </div>
+      </div>
+    </main>
+
+    <svg
+      style="margin-bottom: -10px; margin-left: -8px; margin-right: -8px"
+      viewBox="0 0 120 28"
+    >
+      <defs>
+        <mask id="xxx"></mask>
+        <filter id="goo">
+          <feGaussianBlur
+            in="SourceGraphic"
+            result="blur"
+            stdDeviation="2"
+          ></feGaussianBlur>
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            result="goo"
+            values="                    1 0 0 0 0                      0 1 0 0 0                      0 0 1 0 0                      0 0 0 13 -9"
+          ></feColorMatrix>
+          <feBlend in="SourceGraphic" in2="goo"></feBlend>
+        </filter>
+        <path
+          d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 28 h -240 z"
+          id="wave"
+        ></path>
+      </defs>
+      <use class="wave" id="wave3" x="0" xlink:href="#wave" y="-2"></use>
+      <use class="wave" id="wave2" x="0" xlink:href="#wave" y="0"></use>
+      <!-- <g class="topball"> <circle class="ball" cx="110" cy="8" r="4" stroke="none" stroke-width="0" fill="red" /> <g class="arrow"> <polyline class="" points="108,8 110,6 112,8" fill="none" /> <polyline class="" points="110,6 110,10.5" fill="none" /> </g> </g> -->
+      <g class="gooeff">
+        <!-- <circle class="drop drop1" cx="20" cy="2" r="1.8"></circle>
+        <circle class="drop drop2" cx="25" cy="2.5" r="1.5"></circle>
+        <circle class="drop drop3" cx="16" cy="2.8" r="1.2"></circle> -->
+        <use class="wave" id="wave1" x="0" xlink:href="#wave" y="1"></use>
+      </g>
+    </svg>
+    <footer style="background-color: #2c2d31; margin-right: -8px">
+      <ul type="none" style="display: flex">
+        <img
+          src="https://shakti.org.in/img/logo.png"
+          width="20%"
+          alt=""
+          style="margin-left: 40px; height: 100px; padding-top: 45px"
+        />
+        <svg
+          id="chart"
+          width="10"
+          height="190"
+          style="padding-left: 30px; padding-right: 30px"
+        >
+          <line x="0" y1="0" x2="0" y2="300"></line>
+        </svg>
+        <li style="word-wrap: break-word; width: 330px; line-height: 23px">
+          SHAKTI is an open-source initiative by the Reconfigurable Intelligent
+          Systems Engineering (RISE) group at IIT-Madras . The aim of SHAKTI is
+          to produce production grade processors, complete System on Chips
+          (SoCs), development boards and SHAKTI-based software platform.
+        </li>
+        <svg
+          id="chart1"
+          width="10"
+          height="280"
+          style="padding-left: 70px; padding-right: 30px"
+        >
+          <line x="0" y1="0" x2="0" y2="300"></line>
+        </svg>
+        <ul type="none" style="margin-left: 70px">
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward </span
+            >Processor
+          </li>
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward </span
+            >Softwear
+          </li>
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward </span
+            >Team
+          </li>
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward </span
+            >Publications
+          </li>
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward
+            </span>
+            Media
+          </li>
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward </span
+            >Jobs
+          </li>
+          <li
+            style="opacity: 0.7; cursor: pointer; line-height: 30px"
+            class="li-fa"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="vertical-align: -7px"
+            >
+              arrow_forward </span
+            >Contact Us
+          </li>
+        </ul>
+      </ul>
+      <br /><br />
+      <ul type="none">
+        <li style="font-size: x-large; text-align: center">Contact</li>
+        <li style="margin-left: 400px; margin-top: 20px; width: 450px">
+          Department of Computer Science and Engineering, Indian Institute of
+          Technology, Madras
+        </li>
+        <li style="margin-left: 400px; margin-top: 10px">
+          P.O. Chennai 600036
+        </li>
+        <li style="margin-left: 400px; margin-top: 10px">India</li>
+        <li style="margin-left: 400px; margin-top: 10px">
+          Phone: +91-44-2257-4368
+        </li>
+        <li style="margin-left: 400px; margin-top: 10px">
+          Email: shakti[dot]iitm[@]gmail[dot]com
+        </li>
+      </ul>
+      <br /><br />
+      <div
+        style="
+          background-color: greenyellow;
+          color: black;
+          font-size: 18px;
+          padding-top: 15px;
+          padding-bottom: 15px;
+          text-align: center;
+        "
+      >
+        © Copyright - 2021 IIT Madras
+      </div>
+    </footer>
+  </body>
+</html>
